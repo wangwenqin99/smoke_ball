@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Document</title>
+	<style>
+		canvas{
+			display: block;
+		}
+	</style>
+	<script type="text/javascript" src="lib/colorBall.js"></script>
+</head>
+<body>
+	<canvas id="canvas" style="background-color:#ccc;">你的浏览器不支持,请升级浏览器后再访问</canvas>
+	<script type="text/javascript">
+		// 1. 先查找到canvas
+		var canvas = document.getElementById("canvas");
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		// 2. 获取到当前canvas的"工具栏" --上下文
+		var ctx = canvas.getContext("2d");
+		var balls = [];
+		var colors = ["red","yellow","blue","pink","gold","green","orange","purple"];
+		canvas.onmousemove = function(e){
+			// 去确定扫过之处所需创建的小球颜色
+			var num = parseInt(Math.random()*3);
+			for(var i=0;i<num;i++){
+				var color = colors[parseInt(Math.random()*colors.length)];
+				balls.push(new ColorBall({
+					circleX : e.offsetX,
+					circleY : e.offsetY,
+					circleColor:color
+				}));
+			}
+		}
+		setInterval(function(){
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			for(var i=0;i<balls.length;i++){
+				balls[i].update();
+			}	
+			for(var i=0;i<balls.length;i++){
+				balls[i].render(ctx);
+			}
+		}, 100);
+	</script>
+</body>
+</html>
